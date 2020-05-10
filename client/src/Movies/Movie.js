@@ -4,16 +4,17 @@ import { useParams } from "react-router-dom";
 
 const Movie = (props) => {
   // console.log(props);
-  const [movie, setMovie] = useState(props);
-  const params = useParams();
+  const [movie, setMovie] = useState();
+  const id = useParams();
+  console.log(id);
  
   useEffect(() => {
-    const id = movie.find(movieName => `${movieName.id}` === params.id);
+    // const id = movie.find(movieName => `${movieName.id}` === params.id);
+    
     // change ^^^ that line and grab the id from the URL
     // You will NEED to add a dependency array to this effect hook
-
        axios
-        .get(`http://localhost:5000/api/movies/${id}`)
+        .get(`http://localhost:5000/api/movies/${id.id}`)
         .then(response => {
           setMovie(response.data);
         })
@@ -21,7 +22,8 @@ const Movie = (props) => {
           console.error(error);
         });
 
-  },[]);
+  },[id]);
+  
   
   // Uncomment this only when you have moved on to the stretch goals
   // const saveMovie = () => {
@@ -32,23 +34,24 @@ const Movie = (props) => {
   if (!movie) {
     return <div>Loading movie information...</div>;
   }
+  console.log("movie test", movie);
 
   const { title, director, metascore, stars } = movie;
   return (
     <div className="save-wrapper">
       <div className="movie-card">
-        <h2>{title.movie}</h2>
+        <h2>{title}</h2>
         <div className="movie-director">
-          Director: <em>{director.movie}</em>
+          Director: <em>{director}</em>
         </div>
         <div className="movie-metascore">
-          Metascore: <strong>{metascore.movie}</strong>
+          Metascore: <strong>{metascore}</strong>
         </div>
         <h3>Actors</h3>
 
         {stars.map(star => (
-          <div key={star.movie} className="movie-star">
-            {star.movie}
+          <div key={star} className="movie-star">
+            {star}
           </div>
         ))}
       </div>
